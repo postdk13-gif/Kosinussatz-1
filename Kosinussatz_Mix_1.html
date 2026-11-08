@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kosinussatz anwenden – Mathematik Klasse 10, Selbstlernstunde mit 12 Aufgaben und Selbstkontrolle</title>
+<style>
+  :root{
+    --paper:#fdfdfb; --grid:#e3ebf5; --ink:#1d2433; --blue:#1f4fa3; --blue-soft:#e8eefa;
+    --red:#c22f3a; --red-soft:#fbe9ea; --green:#2c7a4b; --green-soft:#e5f3ea; --muted:#5d6678; --line:#c9d3e2;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0; color:var(--ink); font:17px/1.55 "Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
+    background-color:var(--paper);
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:22px 22px;
+  }
+  .wrap{max-width:780px;margin:0 auto;padding:28px 18px 80px}
+  header h1{font-family:Georgia,"Times New Roman",serif;font-size:2rem;line-height:1.2;margin:0 0 6px;color:var(--blue)}
+  header p{margin:0 0 6px;color:var(--muted)}
+  .bar{position:sticky;top:0;z-index:5;background:rgba(253,253,251,.96);border-bottom:2px solid var(--blue);
+       margin:18px -18px 22px;padding:10px 18px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+  .meter{flex:1;min-width:160px;height:12px;background:var(--blue-soft);border-radius:6px;overflow:hidden}
+  .meter span{display:block;height:100%;width:0;background:var(--green);transition:width .4s}
+  .score{font-weight:600;white-space:nowrap}
+  .task{background:#fff;border:1px solid var(--line);border-left:5px solid var(--blue);border-radius:6px;
+        padding:16px 18px 14px;margin:0 0 18px}
+  .task.done{border-left-color:var(--green)}
+  .head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:6px}
+  .num{font-family:Georgia,serif;font-size:1.35rem;font-weight:700;color:var(--blue)}
+  .src{font-size:.82rem;color:var(--muted);text-align:right}
+  .q{margin:2px 0 10px}
+  .field{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:8px 0}
+  input[type=text]{font:inherit;font-size:1.05rem;padding:7px 10px;width:150px;border:none;border-bottom:2px solid var(--blue);
+        background:var(--blue-soft);border-radius:4px 4px 0 0;color:var(--blue)}
+  input.wide{width:min(100%,320px)}
+  input[type=text]:focus{outline:3px solid #9fb8e6;outline-offset:1px}
+  input.ok{border-bottom-color:var(--green);background:var(--green-soft);color:var(--green)}
+  input.no{border-bottom-color:var(--red);background:var(--red-soft);color:var(--red)}
+  .unit{color:var(--muted)}
+  .mc{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 4px}
+  .mc button{font:inherit;padding:7px 14px;border:2px solid var(--line);background:#fff;border-radius:6px;cursor:pointer;color:var(--ink)}
+  .mc button[aria-pressed=true]{border-color:var(--blue);background:var(--blue-soft);color:var(--blue);font-weight:600}
+  .mc button.ok{border-color:var(--green);background:var(--green-soft);color:var(--green)}
+  .mc button.no{border-color:var(--red);background:var(--red-soft);color:var(--red)}
+  .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  .btn{font:inherit;font-size:.95rem;padding:7px 14px;border-radius:6px;cursor:pointer;border:2px solid var(--blue);background:var(--blue);color:#fff}
+  .btn.ghost{background:#fff;color:var(--blue)}
+  .btn:disabled{opacity:.4;cursor:not-allowed}
+  .btn:focus-visible,.mc button:focus-visible{outline:3px solid #9fb8e6;outline-offset:2px}
+  .fb{margin-top:8px;font-weight:600;min-height:1.2em}
+  .fb.ok{color:var(--green)} .fb.no{color:var(--red)}
+  .box{margin-top:10px;padding:12px 14px;border-radius:6px;font-size:.97rem}
+  .tip{background:#fff8e1;border:1px dashed #d9b44a}
+  .sol{background:var(--green-soft);border:1px solid #b9dcc6}
+  .sol h4{margin:0 0 6px;font-size:1rem;color:var(--green)}
+  .sol .alt{margin-top:8px;padding-top:8px;border-top:1px dashed #9ccab0}
+  .calc{font-family:Georgia,serif;font-size:1.02rem}
+  table.wt{border-collapse:collapse;margin:6px 0}
+  table.wt td,table.wt th{border:1px solid var(--line);padding:4px 12px;text-align:center}
+  svg{max-width:100%;height:auto}
+  .end{background:#fff;border:2px solid var(--blue);border-radius:8px;padding:18px;margin-top:26px}
+  .end h2{font-family:Georgia,serif;margin:0 0 8px;color:var(--blue)}
+  footer{margin-top:30px;font-size:.82rem;color:var(--muted)}
+  @media (max-width:520px){ body{font-size:16px} header h1{font-size:1.6rem} .head{flex-direction:column;gap:0} .src{text-align:left} }
+
+  /* Werkzeugkasten */
+  details.tools{background:#fff;border:2px solid var(--blue);border-radius:8px;margin:18px 0 0;padding:0}
+  details.tools summary{cursor:pointer;padding:12px 16px;font-weight:700;color:var(--blue);font-size:1.08rem;list-style:none}
+  details.tools summary::-webkit-details-marker{display:none}
+  details.tools summary::after{content:" ▾";} details.tools[open] summary::after{content:" ▴";}
+  .tools .in{padding:0 16px 14px}
+  .tools h3{font-size:1rem;margin:12px 0 4px;color:var(--blue)}
+  .tools .formel{font-family:Georgia,serif;font-size:1.08rem;background:var(--blue-soft);border-radius:6px;padding:8px 12px;line-height:1.7}
+  .tools .grid2{display:grid;grid-template-columns:1fr 200px;gap:12px;align-items:center}
+  .tools ol{margin:4px 0;padding-left:22px} .tools li{margin:2px 0}
+  .tools .merke{background:#fff8e1;border:1px dashed #d9b44a;border-radius:6px;padding:8px 12px;margin-top:10px}
+  @media (max-width:560px){ .tools .grid2{grid-template-columns:1fr} .tools .grid2 svg{max-width:220px} }
+  /* Taschenrechner */
+  #calcBtn{margin-left:auto}
+  #calc{position:fixed;right:12px;bottom:12px;z-index:20;width:320px;max-width:calc(100vw - 24px);background:#fff;
+        border:2px solid var(--blue);border-radius:10px;box-shadow:0 8px 28px rgba(0,0,0,.18);padding:10px}
+  #calc[hidden]{display:none}
+  #calc .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;font-weight:700;color:var(--blue)}
+  #calc .top button{font:inherit;border:none;background:none;font-size:1.3rem;cursor:pointer;color:var(--muted);padding:0 6px}
+  #calc .disp{background:var(--blue-soft);border-radius:6px;padding:6px 10px;text-align:right;min-height:64px;margin-bottom:8px}
+  #calc .expr{font-size:.95rem;color:var(--muted);word-break:break-all;min-height:1.3em}
+  #calc .res{font-size:1.5rem;font-weight:700;color:var(--blue);min-height:1.3em}
+  #calc .keys{display:grid;grid-template-columns:repeat(5,1fr);gap:5px}
+  #calc .keys button{font:inherit;font-size:1rem;padding:9px 0;border:1px solid var(--line);border-radius:6px;background:#fff;cursor:pointer;color:var(--ink)}
+  #calc .keys button.f{background:var(--blue-soft);color:var(--blue);font-size:.9rem}
+  #calc .keys button.op{background:#eef1f6;font-weight:700}
+  #calc .keys button.eq{background:var(--blue);color:#fff;font-weight:700}
+  #calc .keys button.del{background:var(--red-soft);color:var(--red)}
+  #calc .take{width:100%;margin-top:6px}
+  #calc .hint{font-size:.78rem;color:var(--muted);margin-top:4px;text-align:center}
+  body.calcopen .wrap{padding-bottom:440px}
+  @media (prefers-reduced-motion:reduce){ .meter span{transition:none} }
+  @media print{ #calc,#calcBtn,.bar,.actions,.fb{display:none} body{background:none} .task{break-inside:avoid} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Kosinussatz anwenden</h1>
+    <p>Mathematik Klasse 10, Selbstlernstunde mit 12 Aufgaben und Selbstkontrolle. Arbeite in deinem eigenen Tempo. Die Aufgaben mit ★ sind für Experten.</p>
+    <p>So gehst du vor: Rechne jede Aufgabe zuerst im Heft. Trage dann dein Ergebnis ein und klicke auf „Prüfen“. Danach kannst du dir den Lösungsvorschlag ansehen und mit deinem Weg vergleichen. Einheiten musst du nicht mit eintippen, Komma oder Punkt ist egal. Im Werkzeugkasten findest du alles, was du brauchst.</p>
+  </header>
+
+  <details class="tools" open>
+  <summary>🧰 Werkzeugkasten Kosinussatz</summary>
+  <div class="in">
+    <div class="grid2">
+      <div>
+        <h3>Der Kosinussatz</h3>
+        <div class="formel">a² = b² + c² − 2bc · cos α<br>b² = a² + c² − 2ac · cos β<br>c² = a² + b² − 2ab · cos γ</div>
+      </div>
+      <svg viewBox="0 0 210 180" width="210" role="img" aria-label="Dreieck ABC mit Seiten a, b, c und Winkeln α, β, γ" xmlns="http://www.w3.org/2000/svg" font-family="Georgia,serif"><line x1="190.0" y1="150.0" x2="120.0" y2="25.0" stroke="#1f4fa3" stroke-width="2"/><text x="169.0" y="84.7" text-anchor="middle" font-size="15" fill="#1f4fa3" font-weight="600">a</text><line x1="20.0" y1="150.0" x2="120.0" y2="25.0" stroke="#1f4fa3" stroke-width="2"/><text x="57.5" y="82.5" text-anchor="middle" font-size="15" fill="#1f4fa3" font-weight="600">b</text><line x1="20.0" y1="150.0" x2="190.0" y2="150.0" stroke="#1f4fa3" stroke-width="2"/><text x="105.0" y="171.0" text-anchor="middle" font-size="15" fill="#1f4fa3" font-weight="600">c</text><path d="M46.0,150.0 A26,26 0 0 0 36.2,129.7" fill="none" stroke="#1f4fa3" stroke-width="1.6"/><text x="57.9" y="136.8" text-anchor="middle" font-size="15" fill="#1f4fa3" font-style="italic">α</text><path d="M177.3,127.3 A26,26 0 0 0 164.0,150.0" fill="none" stroke="#1f4fa3" stroke-width="1.6"/><text x="153.8" y="133.8" text-anchor="middle" font-size="15" fill="#1f4fa3" font-style="italic">β</text><path d="M106.3,42.2 A22,22 0 0 0 130.7,44.2" fill="none" stroke="#1f4fa3" stroke-width="1.6"/><text x="116.9" y="67.9" text-anchor="middle" font-size="15" fill="#1f4fa3" font-style="italic">γ</text><text x="5.5" y="162.7" text-anchor="middle" font-size="16" font-weight="700" fill="#1d2433">A</text><text x="204.2" y="163.4" text-anchor="middle" font-size="16" font-weight="700" fill="#1d2433">B</text><text x="121.9" y="15.1" text-anchor="middle" font-size="16" font-weight="700" fill="#1d2433">C</text></svg>
+    </div>
+    <h3>Wann darf ich ihn anwenden?</h3>
+    <p style="margin:2px 0">Wenn <b>zwei Seiten und der Winkel zwischen ihnen</b> gegeben sind (SWS). Dann berechnest du die dritte Seite. Sind alle drei Seiten bekannt (SSS), kannst du damit sogar einen Winkel berechnen.</p>
+    <h3>So gehst du vor</h3>
+    <ol>
+      <li>Skizze machen und beschriften. Welche Seite ist gesucht?</li>
+      <li>Die Formel wählen, in der links die gesuchte Seite steht.</li>
+      <li>Werte einsetzen und Quadrate ausrechnen.</li>
+      <li>Punkt vor Strich, also zuerst 2 · … · cos ausrechnen, dann subtrahieren.</li>
+      <li><b>Wurzel ziehen</b> nicht vergessen!</li>
+    </ol>
+    <div class="merke">💡 Der Taschenrechner muss auf Grad (DEG) stehen. Ist ein Winkel größer als 90°, ist der Kosinus negativ, dann wird aus „minus“ ein „plus“. Bei 90° ist cos 90° = 0, dann bleibt der Satz des Pythagoras übrig. Unten rechts findest du über „🧮 Rechner“ einen Taschenrechner.</div>
+  </div>
+</details>
+
+  <div class="bar" role="status" aria-live="polite">
+    <div class="meter" aria-hidden="true"><span id="meter"></span></div>
+    <div class="score" id="score">0 Punkte</div>
+    <button class="btn" id="calcBtn" type="button" aria-expanded="false" aria-controls="calc">🧮 Rechner</button>
+    <button class="btn ghost" id="reset" type="button">Neu starten</button>
+  </div>
+
+  <main id="tasks"></main>
+
+  <section class="end" id="end">
+    <h2>Deine Auswertung</h2>
+    <p id="endText">Bearbeite die Aufgaben und klicke dann hier auf „Auswerten“.</p>
+    <button class="btn" id="evalBtn" type="button">Auswerten</button>
+  </section>
+
+  <footer>Übungsaufgaben zum Kosinussatz, für den Unterricht erstellt. Die Seite speichert keine Eingaben und sendet keine Daten.</footer>
+</div>
+
+
+<div id="calc" hidden role="dialog" aria-label="Taschenrechner">
+  <div class="top"><span>🧮 Taschenrechner (Grad)</span><button type="button" id="calcClose" aria-label="Rechner schließen">✕</button></div>
+  <div class="disp"><div class="expr" id="cExpr"></div><div class="res" id="cRes">0</div></div>
+  <div class="keys">
+    <button class="f" data-k="sin(">sin</button><button class="f" data-k="cos(">cos</button><button class="f" data-k="tan(">tan</button><button class="f" data-k="cos⁻¹(">cos⁻¹</button><button class="del" data-k="DEL">⌫</button>
+    <button class="f" data-k="²">x²</button><button class="f" data-k="√(">√</button><button class="f" data-k="(">(</button><button class="f" data-k=")">)</button><button class="del" data-k="AC">AC</button>
+    <button data-k="7">7</button><button data-k="8">8</button><button data-k="9">9</button><button class="op" data-k="÷">÷</button><button class="f" data-k="sin⁻¹(">sin⁻¹</button>
+    <button data-k="4">4</button><button data-k="5">5</button><button data-k="6">6</button><button class="op" data-k="×">×</button><button class="f" data-k="Ans">Ans</button>
+    <button data-k="1">1</button><button data-k="2">2</button><button data-k="3">3</button><button class="op" data-k="−">−</button><button class="f" data-k="π">π</button>
+    <button data-k="0">0</button><button data-k=",">,</button><button class="f" data-k="°">°</button><button class="op" data-k="+">+</button><button class="eq" data-k="=">=</button>
+  </div>
+  <button class="btn ghost take" type="button" id="cTake">Ergebnis ins Antwortfeld übernehmen</button>
+  <div class="hint">Winkel immer in Grad. Das Zeichen ° kannst du weglassen.</div>
+</div>
+
+<script>
+/* Aufgabentypen:
+   "num"  Zahlenfeld, accept = Liste akzeptierter Zahlen (z. B. Rundungsvarianten, andere Einheiten)
+   "mc"   Auswahl, options = Liste, correct = Index der richtigen Option
+   "text" Kurzantwort, accept = Liste akzeptierter Wörter/Begriffe (Groß-/Kleinschreibung egal)
+   Optional pro Aufgabe: fig (SVG/HTML), points (Gesamtpunkte, nur bei komplett richtig), alt (Auch-richtig-Hinweis) */
+const T = [
+ {
+  "src": "Stufe 1 · Grundlagen",
+  "q": "Im Dreieck ABC sind die Seiten a und b und der Winkel γ gegeben. Mit welcher Formel berechnest du die Seite c?",
+  "parts": [
+   {
+    "type": "mc",
+    "options": [
+     "c² = a² + b² − 2ab · cos γ",
+     "c² = a² + b² − 2bc · cos α",
+     "c² = a² + b²",
+     "c = a + b − 2ab · cos γ"
+    ],
+    "correct": 0
+   }
+  ],
+  "tip": "Die Formel muss den gegebenen Winkel γ enthalten. Und links steht immer das Quadrat der gesuchten Seite.",
+  "sol": "<p>Gesucht ist c, gegeben sind a, b und der Winkel γ zwischen ihnen. Deshalb passt <b>c² = a² + b² − 2ab · cos γ</b>. Die Seite, die links steht, liegt dem Winkel in der Formel gegenüber.</p>"
+ },
+ {
+  "src": "Stufe 1 · Grundlagen",
+  "q": "Wann kannst du die dritte Seite eines Dreiecks direkt mit dem Kosinussatz berechnen?",
+  "parts": [
+   {
+    "type": "mc",
+    "options": [
+     "wenn zwei Seiten und der Winkel zwischen ihnen gegeben sind",
+     "wenn eine Seite und zwei Winkel gegeben sind",
+     "wenn nur die drei Winkel gegeben sind",
+     "wenn zwei Seiten und ein Winkel gegeben sind, der keiner der beiden anliegt"
+    ],
+    "correct": 0
+   }
+  ],
+  "tip": "Schau dir die Formel an. Rechts stehen zwei Seiten und ein Winkel. Wo liegt dieser Winkel im Dreieck?",
+  "sol": "<p>Der Kosinussatz braucht <b>zwei Seiten und den eingeschlossenen Winkel</b>, also den Winkel, den die beiden Seiten miteinander bilden. Man sagt auch kurz SWS (Seite, Winkel, Seite). Genau so begründest du in Aufgaben, warum du den Kosinussatz anwenden darfst.</p>"
+ },
+ {
+  "src": "Stufe 2 · Rechnen",
+  "q": "Gegeben: a = 5 cm, b = 7 cm, γ = 40°.<br>Berechne zuerst c² und dann die Seite c. Runde auf zwei Nachkommastellen.",
+  "parts": [
+   {
+    "type": "num",
+    "label": "c² ≈",
+    "unit": "cm²",
+    "accept": [
+     20.38
+    ],
+    "tol": 0.3
+   },
+   {
+    "type": "num",
+    "label": "c ≈",
+    "unit": "cm",
+    "accept": [
+     4.51
+    ],
+    "tol": 0.04
+   }
+  ],
+  "tip": "Setze in c² = a² + b² − 2ab · cos γ ein. Denke am Ende an die Wurzel!",
+  "sol": "<p class=\"calc\">c² = a² + b² − 2 · a · b · cos γ<br>c² = 5² + 7² − 2 · 5 · 7 · cos 40°<br>c² = 25 + 49 − 70 · cos 40°<br>c² = 74 − 53,62<br>c² ≈ 20,38 cm² &nbsp;&nbsp;| √<br><b>c ≈ 4,51 cm</b></p>",
+  "alt": "Auch richtig: c ≈ 4,5 cm. Wer cos 40° vorher auf 0,77 rundet, erhält etwa 4,48 cm, das wird auch akzeptiert."
+ },
+ {
+  "src": "Stufe 2 · Rechnen",
+  "q": "Gegeben: b = 6 cm, c = 9 cm, α = 72°.<br>Berechne die Seite a.",
+  "parts": [
+   {
+    "type": "num",
+    "label": "a ≈",
+    "unit": "cm",
+    "accept": [
+     9.14,
+     9.1
+    ],
+    "tol": 0.02
+   }
+  ],
+  "tip": "Gesucht ist a, also brauchst du die Formel, in der a² links steht und α vorkommt.",
+  "sol": "<p class=\"calc\">a² = b² + c² − 2 · b · c · cos α<br>a² = 6² + 9² − 2 · 6 · 9 · cos 72°<br>a² = 36 + 81 − 108 · cos 72°<br>a² = 117 − 33,37<br>a² ≈ 83,63 cm² &nbsp;&nbsp;| √<br><b>a ≈ 9,14 cm</b></p>",
+  "alt": "Auch richtig: a ≈ 9,1 cm"
+ },
+ {
+  "src": "Stufe 2 · Rechnen",
+  "q": "Berechne die fehlende Seitenlänge (orange).",
+  "fig": "<svg viewBox=\"0 0 340 240\" width=\"340\" role=\"img\" aria-label=\"Dreieck ABC: AB = 6,5 cm, AC = 4,8 cm, Winkel bei A = 58°, gesucht BC\" xmlns=\"http://www.w3.org/2000/svg\" font-family=\"Georgia,serif\"><line x1=\"40.0\" y1=\"200.0\" x2=\"300.0\" y2=\"200.0\" stroke=\"#1d2433\" stroke-width=\"2\"/><text x=\"170.0\" y=\"221.0\" text-anchor=\"middle\" font-size=\"15\" fill=\"#1d2433\" font-weight=\"600\">6,5 cm</text><line x1=\"40.0\" y1=\"200.0\" x2=\"141.7\" y2=\"37.2\" stroke=\"#1d2433\" stroke-width=\"2\"/><text x=\"70.5\" y=\"110.9\" text-anchor=\"middle\" font-size=\"15\" fill=\"#1d2433\" font-weight=\"600\">4,8 cm</text><line x1=\"300.0\" y1=\"200.0\" x2=\"141.7\" y2=\"37.2\" stroke=\"#e07b1a\" stroke-width=\"2.5\"/><text x=\"232.3\" y=\"112.4\" text-anchor=\"middle\" font-size=\"15\" fill=\"#e07b1a\" font-weight=\"600\">?</text><path d=\"M70.0,200.0 A30,30 0 0 0 55.9,174.6\" fill=\"none\" stroke=\"#1f4fa3\" stroke-width=\"1.6\"/><text x=\"83.7\" y=\"180.8\" text-anchor=\"middle\" font-size=\"15\" fill=\"#1f4fa3\" font-style=\"italic\">58°</text><text x=\"25.4\" y=\"212.6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"700\" fill=\"#1d2433\">A</text><text x=\"314.9\" y=\"211.8\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"700\" fill=\"#1d2433\">B</text><text x=\"139.0\" y=\"27.4\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"700\" fill=\"#1d2433\">C</text></svg>",
+  "parts": [
+   {
+    "type": "num",
+    "label": "BC = a ≈",
+    "unit": "cm",
+    "accept": [
+     5.68,
+     5.7
+    ],
+    "tol": 0.02
+   }
+  ],
+  "tip": "Welche beiden Seiten schließen den 58°-Winkel ein? Die gesuchte Seite liegt dem Winkel gegenüber.",
+  "sol": "<p>Die Seiten 6,5 cm und 4,8 cm schließen den Winkel 58° ein (SWS). Also darf der Kosinussatz angewendet werden.</p><p class=\"calc\">a² = b² + c² − 2 · b · c · cos α<br>a² = 4,8² + 6,5² − 2 · 4,8 · 6,5 · cos 58°<br>a² = 23,04 + 42,25 − 62,4 · cos 58°<br>a² = 65,29 − 33,07<br>a² ≈ 32,22 cm² &nbsp;&nbsp;| √<br><b>a ≈ 5,68 cm</b></p>",
+  "alt": "Auch richtig: a ≈ 5,7 cm"
+ },
+ {
+  "src": "Stufe 2 · Rechnen",
+  "q": "Gegeben: a = 8,4 cm, c = 5,6 cm, β = 115°.<br>Berechne die Seite b. Achtung, der Winkel ist stumpf!",
+  "parts": [
+   {
+    "type": "num",
+    "label": "b ≈",
+    "unit": "cm",
+    "accept": [
+     11.9
+    ],
+    "tol": 0.02
+   }
+  ],
+  "tip": "Berechne cos 115° einzeln. Der Wert ist negativ. Minus mal minus ergibt plus!",
+  "sol": "<p class=\"calc\">b² = a² + c² − 2 · a · c · cos β<br>b² = 8,4² + 5,6² − 2 · 8,4 · 5,6 · cos 115°<br>b² = 70,56 + 31,36 − 94,08 · cos 115°<br>b² = 101,92 − (−39,76)<br>b² = 101,92 + 39,76<br>b² ≈ 141,68 cm² &nbsp;&nbsp;| √<br><b>b ≈ 11,90 cm</b></p><p>Weil cos 115° negativ ist, wird b länger als bei einem rechten Winkel. Das passt, denn der stumpfe Winkel drückt die beiden Seiten weit auseinander.</p>",
+  "alt": "Auch richtig: b ≈ 11,9 cm"
+ },
+ {
+  "src": "Stufe 2 · Rechnen",
+  "q": "Tom soll c berechnen mit a = 4 cm, b = 6 cm und γ = 48°. Er rechnet so:<br><span class=\"calc\">c² = 16 + 36 − 48 · cos 48° = 4 · cos 48° ≈ 2,68, also c ≈ 1,64 cm</span><br>a) Welchen Fehler hat Tom gemacht?<br>b) Wie lang ist c wirklich?",
+  "parts": [
+   {
+    "type": "mc",
+    "options": [
+     "Er hat 52 − 48 zuerst gerechnet, obwohl Punkt vor Strich gilt.",
+     "Er hat vergessen, die Wurzel zu ziehen.",
+     "Er hat die falsche Formel benutzt.",
+     "Er hat 4² falsch ausgerechnet."
+    ],
+    "correct": 0
+   },
+   {
+    "type": "num",
+    "label": "b) c ≈",
+    "unit": "cm",
+    "accept": [
+     4.46,
+     4.5
+    ],
+    "tol": 0.03
+   }
+  ],
+  "tip": "Was muss zuerst berechnet werden, 48 · cos 48° oder 52 − 48?",
+  "sol": "<p>Tom hat die Regel Punkt vor Strich verletzt. Zuerst wird 48 · cos 48° ausgerechnet, erst danach wird subtrahiert.</p><p class=\"calc\">c² = 4² + 6² − 2 · 4 · 6 · cos 48°<br>c² = 16 + 36 − 48 · cos 48°<br>c² = 52 − 32,12<br>c² ≈ 19,88 cm² &nbsp;&nbsp;| √<br><b>c ≈ 4,46 cm</b></p>",
+  "alt": "Auch richtig: c ≈ 4,5 cm. Tipp für den Taschenrechner: Gib alles in einem Rutsch ein, also 16 + 36 − 48 × cos(48), dann rechnet er automatisch Punkt vor Strich."
+ },
+ {
+  "src": "Stufe 3 · Anwenden (Entdecken)",
+  "q": "Im Dreieck ABC ist γ = 90°. Berechne c mit dem Kosinussatz.<br>Was fällt dir auf?",
+  "fig": "<svg viewBox=\"0 0 320 240\" width=\"320\" role=\"img\" aria-label=\"Rechtwinkliges Dreieck mit rechtem Winkel bei C, a = 6 cm, b = 8 cm, gesucht c\" xmlns=\"http://www.w3.org/2000/svg\" font-family=\"Georgia,serif\"><line x1=\"95.0\" y1=\"200.0\" x2=\"226.0\" y2=\"200.0\" stroke=\"#1d2433\" stroke-width=\"2\"/><text x=\"160.5\" y=\"221.0\" text-anchor=\"middle\" font-size=\"15\" fill=\"#1d2433\" font-weight=\"600\">b = 8 cm</text><line x1=\"95.0\" y1=\"200.0\" x2=\"50.0\" y2=\"68.0\" stroke=\"#1d2433\" stroke-width=\"2\"/><text x=\"34.6\" y=\"151.9\" text-anchor=\"middle\" font-size=\"15\" fill=\"#1d2433\" font-weight=\"600\">a = 6 cm</text><line x1=\"226.0\" y1=\"200.0\" x2=\"50.0\" y2=\"68.0\" stroke=\"#e07b1a\" stroke-width=\"2.5\"/><text x=\"153.6\" y=\"118.2\" text-anchor=\"middle\" font-size=\"15\" fill=\"#e07b1a\" font-weight=\"600\">c = ?</text><path d=\"M111.0,200.0 L105.8,184.9 L89.8,184.9\" fill=\"none\" stroke=\"#1f4fa3\" stroke-width=\"1.6\"/><circle cx=\"100.4\" cy=\"192.4\" r=\"1.8\" fill=\"#1f4fa3\"/><path d=\"M95.0,200.0 A0,0 0 0 0 95.0,200.0\" fill=\"none\" stroke=\"#1f4fa3\" stroke-width=\"1.6\"/><text x=\"114.8\" y=\"177.4\" text-anchor=\"middle\" font-size=\"13\" fill=\"#1f4fa3\" font-style=\"italic\">90°</text><text x=\"240.7\" y=\"212.3\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"700\" fill=\"#1d2433\">A</text><text x=\"39.7\" y=\"61.7\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"700\" fill=\"#1d2433\">B</text><text x=\"86.3\" y=\"219.4\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"700\" fill=\"#1d2433\">C</text></svg>",
+  "parts": [
+   {
+    "type": "num",
+    "label": "c =",
+    "unit": "cm",
+    "accept": [
+     10
+    ]
+   },
+   {
+    "type": "mc",
+    "options": [
+     "cos 90° = 0, deshalb fällt der hintere Teil weg und es bleibt der Satz des Pythagoras.",
+     "Bei 90° darf man den Kosinussatz nicht anwenden.",
+     "c ist immer die Summe von a und b."
+    ],
+    "correct": 0
+   }
+  ],
+  "tip": "Tippe cos 90° in den Taschenrechner. Was kommt heraus?",
+  "sol": "<p class=\"calc\">c² = a² + b² − 2 · a · b · cos γ<br>c² = 6² + 8² − 2 · 6 · 8 · cos 90°<br>c² = 36 + 64 − 96 · 0<br>c² = 100 &nbsp;&nbsp;| √<br><b>c = 10 cm</b></p><p>Weil cos 90° = 0 ist, bleibt nur c² = a² + b² übrig. Der Satz des Pythagoras ist also ein Sonderfall des Kosinussatzes.</p>"
+ },
+ {
+  "src": "Stufe 3 · Anwenden",
+  "q": "Ein dreieckiges Grundstück hat zwei Seiten mit 24 m und 31 m Länge. Sie schließen einen Winkel von 68° ein.<br>a) Wie lang ist die dritte Seite?<br>b) Das Grundstück soll komplett eingezäunt werden. Wie viel Meter Zaun werden gebraucht?<br>c) Berechne den Flächeninhalt des Grundstücks.",
+  "parts": [
+   {
+    "type": "num",
+    "label": "a) dritte Seite ≈",
+    "unit": "m",
+    "accept": [
+     31.3
+    ],
+    "tol": 0.12
+   },
+   {
+    "type": "num",
+    "label": "b) Zaun ≈",
+    "unit": "m",
+    "accept": [
+     86.3
+    ],
+    "tol": 0.15
+   },
+   {
+    "type": "num",
+    "label": "c) A ≈",
+    "unit": "m²",
+    "accept": [
+     344.9
+    ],
+    "tol": 0.6
+   }
+  ],
+  "tip": "a) Kosinussatz. b) Zaun = Umfang, also alle drei Seiten addieren. c) Erinnere dich an die Flächenformel mit dem Sinus aus der Klassenarbeit, A = ½ · a · b · sin γ.",
+  "sol": "<p>a)</p><p class=\"calc\">x² = 24² + 31² − 2 · 24 · 31 · cos 68°<br>x² = 576 + 961 − 1488 · cos 68°<br>x² = 1537 − 557,42<br>x² ≈ 979,58 m² &nbsp;&nbsp;| √<br><b>x ≈ 31,30 m</b></p><p>b)</p><p class=\"calc\">u = 24 m + 31 m + 31,30 m<br><b>u ≈ 86,30 m</b></p><p>c)</p><p class=\"calc\">A = ½ · 24 · 31 · sin 68°<br>A = 372 · sin 68°<br><b>A ≈ 344,91 m²</b></p>",
+  "alt": "Auch richtig: 31,3 m, 86,3 m und 345 m²."
+ },
+ {
+  "src": "Stufe 3 · Anwenden",
+  "q": "Von einer Kreuzung führt ein Weg 3,2 km zu einer Hütte, ein anderer 4,5 km zu einem Aussichtsturm. Die beiden Wege bilden einen Winkel von 52°.<br>Wie weit sind Hütte und Turm voneinander entfernt (Luftlinie)?",
+  "fig": "<svg viewBox=\"0 0 300 240\" width=\"300\" role=\"img\" aria-label=\"Zwei Wege von der Kreuzung: 3,2 km zur Hütte, 4,5 km zum Turm, Winkel 52 Grad, gesucht Entfernung Hütte Turm\" xmlns=\"http://www.w3.org/2000/svg\" font-family=\"Georgia,serif\"><line x1=\"30.0\" y1=\"200.0\" x2=\"255.0\" y2=\"200.0\" stroke=\"#1d2433\" stroke-width=\"2\"/><text x=\"142.5\" y=\"221.0\" text-anchor=\"middle\" font-size=\"15\" fill=\"#1d2433\" font-weight=\"600\">4,5 km</text><line x1=\"30.0\" y1=\"200.0\" x2=\"128.5\" y2=\"73.9\" stroke=\"#1d2433\" stroke-width=\"2\"/><text x=\"66.6\" y=\"132.1\" text-anchor=\"middle\" font-size=\"15\" fill=\"#1d2433\" font-weight=\"600\">3,2 km</text><line x1=\"128.5\" y1=\"73.9\" x2=\"255.0\" y2=\"200.0\" stroke=\"#e07b1a\" stroke-width=\"2.5\" stroke-dasharray=\"7 5\"/><text x=\"203.0\" y=\"130.6\" text-anchor=\"middle\" font-size=\"15\" fill=\"#e07b1a\" font-weight=\"600\">?</text><path d=\"M60.0,200.0 A30,30 0 0 0 48.5,176.4\" fill=\"none\" stroke=\"#1f4fa3\" stroke-width=\"1.6\"/><text x=\"76.7\" y=\"182.2\" text-anchor=\"middle\" font-size=\"15\" fill=\"#1f4fa3\" font-style=\"italic\">52°</text><text x=\"30\" y=\"226\" font-size=\"14\" text-anchor=\"middle\" fill=\"#1d2433\">Kreuzung</text><text x=\"128.50583605210534\" y=\"61.918279422924485\" font-size=\"14\" text-anchor=\"middle\" fill=\"#1d2433\">Hütte</text><text x=\"255.0\" y=\"226\" font-size=\"14\" text-anchor=\"middle\" fill=\"#1d2433\">Turm</text><circle cx=\"30.0\" cy=\"200.0\" r=\"4\" fill=\"#1f4fa3\"/><circle cx=\"255.0\" cy=\"200.0\" r=\"4\" fill=\"#1f4fa3\"/><circle cx=\"128.5\" cy=\"73.9\" r=\"4\" fill=\"#1f4fa3\"/></svg>",
+  "parts": [
+   {
+    "type": "num",
+    "label": "Entfernung ≈",
+    "unit": "km",
+    "accept": [
+     3.57,
+     3.6
+    ],
+    "tol": 0.025
+   }
+  ],
+  "tip": "Die beiden Wege sind zwei Seiten, der Winkel liegt zwischen ihnen. Die gesuchte Entfernung ist die dritte Seite.",
+  "sol": "<p class=\"calc\">d² = 3,2² + 4,5² − 2 · 3,2 · 4,5 · cos 52°<br>d² = 10,24 + 20,25 − 28,8 · cos 52°<br>d² = 30,49 − 17,73<br>d² ≈ 12,76 km² &nbsp;&nbsp;| √<br><b>d ≈ 3,57 km</b></p><p>Hütte und Turm sind etwa 3,57 km voneinander entfernt.</p>",
+  "alt": "Auch richtig: 3,6 km"
+ },
+ {
+  "src": "★ Expertenaufgabe",
+  "q": "Ein Schiff fährt vom Hafen 12 km geradeaus. Dann ändert es seinen Kurs um 35° nach links und fährt noch 8 km weiter.<br>Wie weit ist das Schiff jetzt vom Hafen entfernt?",
+  "fig": "<svg viewBox=\"0 0 440 230\" width=\"440\" role=\"img\" aria-label=\"Schiff fährt 12 km geradeaus, ändert den Kurs um 35 Grad und fährt 8 km weiter, gesucht Entfernung zum Hafen\" xmlns=\"http://www.w3.org/2000/svg\" font-family=\"Georgia,serif\"><line x1=\"30.0\" y1=\"190.0\" x2=\"270.0\" y2=\"190.0\" stroke=\"#1d2433\" stroke-width=\"2\"/><text x=\"150.0\" y=\"177.0\" text-anchor=\"middle\" font-size=\"19\" fill=\"#1d2433\" font-weight=\"600\">12 km</text><line x1=\"270.0\" y1=\"190.0\" x2=\"401.1\" y2=\"98.2\" stroke=\"#1d2433\" stroke-width=\"2\"/><text x=\"324.1\" y=\"132.7\" text-anchor=\"middle\" font-size=\"19\" fill=\"#1d2433\" font-weight=\"600\">8 km</text><line x1=\"30.0\" y1=\"190.0\" x2=\"401.1\" y2=\"98.2\" stroke=\"#e07b1a\" stroke-width=\"2.5\" stroke-dasharray=\"7 5\"/><text x=\"220.3\" y=\"168.5\" text-anchor=\"middle\" font-size=\"22\" fill=\"#e07b1a\" font-weight=\"600\">?</text><line x1=\"270\" y1=\"190\" x2=\"360\" y2=\"190\" stroke=\"#1d2433\" stroke-width=\"1.3\" stroke-dasharray=\"4 4\"/><path d=\"M310.0,190.0 A40,40 0 0 0 302.8,167.1\" fill=\"none\" stroke=\"#1f4fa3\" stroke-width=\"1.6\"/><text x=\"327.2\" y=\"177.0\" text-anchor=\"middle\" font-size=\"19\" fill=\"#1f4fa3\" font-style=\"italic\">35°</text><text x=\"30\" y=\"216\" font-size=\"18\" text-anchor=\"middle\">Hafen</text><text x=\"270\" y=\"216\" font-size=\"18\" text-anchor=\"middle\">Kurswechsel</text><text x=\"401.0643270862387\" y=\"86.22777018383263\" font-size=\"18\" text-anchor=\"middle\">Schiff</text><circle cx=\"30.0\" cy=\"190.0\" r=\"4\" fill=\"#1f4fa3\"/><circle cx=\"270.0\" cy=\"190.0\" r=\"4\" fill=\"#1f4fa3\"/><circle cx=\"401.1\" cy=\"98.2\" r=\"4\" fill=\"#1f4fa3\"/></svg>",
+  "parts": [
+   {
+    "type": "num",
+    "label": "Entfernung ≈",
+    "unit": "km",
+    "accept": [
+     19.11,
+     19.1
+    ],
+    "tol": 0.02
+   }
+  ],
+  "points": 2,
+  "tip": "Die 35° sind nicht der Winkel im Dreieck! Der Winkel im Dreieck ergänzt die 35° zu 180°.",
+  "sol": "<p>Der Winkel im Dreieck beim Kurswechsel beträgt 180° − 35° = 145°.</p><p class=\"calc\">d² = 12² + 8² − 2 · 12 · 8 · cos 145°<br>d² = 144 + 64 − 192 · cos 145°<br>d² = 208 − (−157,28)<br>d² = 208 + 157,28<br>d² ≈ 365,28 km² &nbsp;&nbsp;| √<br><b>d ≈ 19,11 km</b></p><p>Das Schiff ist etwa 19,11 km vom Hafen entfernt.</p>",
+  "alt": "Auch richtig: 19,1 km"
+ },
+ {
+  "src": "★ Expertenaufgabe",
+  "q": "Mit dem Kosinussatz kannst du auch Winkel berechnen, wenn alle drei Seiten bekannt sind.<br>Gegeben: a = 5 cm, b = 7 cm, c = 8 cm. Berechne den Winkel γ.",
+  "parts": [
+   {
+    "type": "num",
+    "label": "γ ≈",
+    "unit": "°",
+    "accept": [
+     81.79,
+     81.8
+    ],
+    "tol": 0.02
+   }
+  ],
+  "points": 2,
+  "tip": "Setze alle Seiten in c² = a² + b² − 2ab · cos γ ein und stelle Schritt für Schritt nach cos γ um. Am Ende brauchst du die Taste cos⁻¹ (meist Shift + cos).",
+  "sol": "<p class=\"calc\">c² = a² + b² − 2 · a · b · cos γ<br>8² = 5² + 7² − 2 · 5 · 7 · cos γ<br>64 = 25 + 49 − 70 · cos γ<br>64 = 74 − 70 · cos γ &nbsp;&nbsp;| − 74<br>−10 = −70 · cos γ &nbsp;&nbsp;| : (−70)<br>0,1429 ≈ cos γ &nbsp;&nbsp;| cos⁻¹<br><b>γ ≈ 81,79°</b></p>",
+  "alt": "Auch richtig: γ ≈ 81,8°"
+ }
+];
+
+const LOB = ["Hervorragend, das sitzt!", "Gut gemacht, nur noch wenige Lücken.", "Ein solider Anfang. Wiederhole die Aufgaben, die noch nicht geklappt haben.", "Hier lohnt sich noch Übung. Nutze die Tipps und Lösungsvorschläge."];
+
+const TOTAL = T.reduce((s,t)=>s+(t.points||t.parts.length),0);
+const state = T.map(t=>({checked:false, ok:t.parts.map(()=>false), mc:t.parts.map(()=>null)}));
+
+function parseNum(raw){
+  if(!raw) return NaN;
+  let s = raw.toLowerCase().replace(/\s+/g,"").replace(/[−–]/g,"-").replace(/≈/g,"=").replace(/²/g,"2").replace(/³/g,"3")
+    .replace(/^[a-zα-ω]+[0-9]*=/,"")
+    .replace(/[^\d.,\/-].*$/,"")
+    .replace(",",".");
+  if(/^-?\d+(\.\d+)?\/-?\d+(\.\d+)?$/.test(s)){ const [a,b]=s.split("/").map(Number); return a/b; }
+  return /^-?\d*\.?\d+$/.test(s) ? Number(s) : NaN;
+}
+function normText(raw){
+  return (raw||"").toLowerCase().trim().replace(/\s+/g," ").replace(/[.!?;:,"„“']/g,"");
+}
+
+function render(){
+  const box = document.getElementById("tasks");
+  box.innerHTML = "";
+  T.forEach((t,i)=>{
+    const el = document.createElement("article");
+    el.className = "task"; el.id = "t"+i;
+    let html = `<div class="head"><span class="num">Aufgabe ${i+1}</span><span class="src">${t.src||""}</span></div>
+      <div class="q">${t.q}</div>${t.fig?`<div>${t.fig}</div>`:""}`;
+    t.parts.forEach((p,j)=>{
+      if(p.type==="num" || p.type==="text"){
+        html += `<div class="field"><label for="in${i}_${j}">${p.label||"Antwort:"}</label>
+          <input type="text" ${p.type==="num"?'':'class="wide"'} autocomplete="off" autocapitalize="off" spellcheck="false" id="in${i}_${j}">
+          ${p.unit?`<span class="unit">${p.unit}</span>`:""}</div>`;
+      } else {
+        html += `<div class="mc" role="group" aria-label="Antwortmöglichkeiten">${p.options.map((o,k)=>
+          `<button type="button" aria-pressed="false" data-i="${i}" data-j="${j}" data-k="${k}">${o}</button>`).join("")}</div>`;
+      }
+    });
+    html += `<div class="actions">
+        <button class="btn" type="button" data-act="check" data-i="${i}">Prüfen</button>
+        ${t.tip?`<button class="btn ghost" type="button" data-act="tip" data-i="${i}">Tipp</button>`:""}
+        <button class="btn ghost" type="button" data-act="sol" data-i="${i}" disabled title="Erst nach dem Prüfen verfügbar">Lösungsvorschlag</button>
+      </div>
+      <div class="fb" id="fb${i}" aria-live="polite"></div>
+      ${t.tip?`<div class="box tip" id="tip${i}" hidden>💡 ${t.tip}</div>`:""}
+      <div class="box sol" id="sol${i}" hidden><h4>Lösungsvorschlag</h4>${t.sol}${t.alt?`<div class="alt">${t.alt}</div>`:""}</div>`;
+    el.innerHTML = html;
+    box.appendChild(el);
+  });
+}
+
+function check(i){
+  const t=T[i], st=state[i];
+  let allOk=true, anyEmpty=false;
+  t.parts.forEach((p,j)=>{
+    let ok=false;
+    if(p.type==="num" || p.type==="text"){
+      const inp=document.getElementById(`in${i}_${j}`);
+      if(inp.value.trim()==="") anyEmpty=true;
+      if(p.type==="num"){
+        const v=parseNum(inp.value), tol=p.tol||1e-6;
+        ok = !isNaN(v) && p.accept.some(a=>Math.abs(a-v)<=tol);
+      } else {
+        const v=normText(inp.value);
+        ok = v!=="" && p.accept.some(a=>normText(a)===v);
+      }
+      inp.classList.remove("ok","no"); if(inp.value.trim()!=="") inp.classList.add(ok?"ok":"no");
+    } else {
+      const sel=st.mc[j];
+      if(sel===null) anyEmpty=true;
+      ok = sel===p.correct;
+      document.querySelectorAll(`#t${i} .mc button[data-j="${j}"]`).forEach(b=>{
+        b.classList.remove("ok","no");
+        if(+b.dataset.k===sel) b.classList.add(ok?"ok":"no");
+      });
+    }
+    st.ok[j]=ok; if(!ok) allOk=false;
+  });
+  const fb=document.getElementById("fb"+i);
+  if(anyEmpty && !allOk){ fb.className="fb no"; fb.textContent="Trage zuerst eine Antwort ein oder wähle eine aus."; return; }
+  st.checked=true;
+  fb.className="fb "+(allOk?"ok":"no");
+  if(allOk) fb.textContent="✓ Richtig! Vergleiche trotzdem deinen Weg mit dem Lösungsvorschlag.";
+  else if(st.ok.some(Boolean)) fb.textContent="Teilweise richtig. Prüfe die rot markierte Antwort noch einmal.";
+  else fb.textContent="✗ Noch nicht richtig. Schau dir den Tipp an und versuche es noch einmal.";
+  const sb=document.querySelector(`#t${i} [data-act=sol]`); sb.disabled=false; sb.removeAttribute("title");
+  document.getElementById("t"+i).classList.toggle("done",allOk);
+  updateScore();
+}
+
+function points(i){
+  const t=T[i], ok=state[i].ok;
+  if(t.points) return ok.every(Boolean)?t.points:0;
+  return ok.filter(Boolean).length;
+}
+function updateScore(){
+  const s=T.reduce((a,_,i)=>a+points(i),0);
+  document.getElementById("score").textContent=`${s} von ${TOTAL} Punkten`;
+  document.getElementById("meter").style.width=(s/TOTAL*100)+"%";
+  return s;
+}
+
+document.addEventListener("click",e=>{
+  const b=e.target.closest("button"); if(!b) return;
+  if(b.closest(".mc")){
+    const i=+b.dataset.i, j=+b.dataset.j, k=+b.dataset.k;
+    state[i].mc[j]=k;
+    b.parentElement.querySelectorAll("button").forEach(x=>{x.setAttribute("aria-pressed",x===b?"true":"false"); x.classList.remove("ok","no");});
+    return;
+  }
+  const i=+b.dataset.i;
+  if(b.dataset.act==="check") check(i);
+  if(b.dataset.act==="tip"){ const t=document.getElementById("tip"+i); t.hidden=!t.hidden; }
+  if(b.dataset.act==="sol"){ const s=document.getElementById("sol"+i); s.hidden=!s.hidden; b.textContent=s.hidden?"Lösungsvorschlag":"Lösung ausblenden"; }
+});
+document.addEventListener("keydown",e=>{
+  if(e.key==="Enter" && e.target.matches("input[type=text]")){ check(+e.target.id.slice(2).split("_")[0]); }
+});
+
+document.getElementById("evalBtn").addEventListener("click",()=>{
+  const s=updateScore();
+  const open=[], wrong=[];
+  T.forEach((t,i)=>{ if(!state[i].checked) open.push(i+1); else if(points(i)<(t.points||t.parts.length)) wrong.push(i+1); });
+  const pct=Math.round(s/TOTAL*100);
+  let msg=`Du hast <b>${s} von ${TOTAL} Punkten</b> erreicht (${pct} %). `;
+  msg += pct>=90?LOB[0]:pct>=70?LOB[1]:pct>=50?LOB[2]:LOB[3];
+  if(wrong.length) msg+=`<br>Noch einmal ansehen: Aufgabe ${wrong.join(", ")}.`;
+  if(open.length) msg+=`<br>Noch nicht bearbeitet: Aufgabe ${open.join(", ")}.`;
+  document.getElementById("endText").innerHTML=msg;
+});
+
+document.getElementById("reset").addEventListener("click",()=>{
+  if(!confirm("Alle Eingaben löschen und neu beginnen?")) return;
+  state.forEach(s=>{s.checked=false; s.ok=s.ok.map(()=>false); s.mc=s.mc.map(()=>null);});
+  render(); updateScore();
+  document.getElementById("endText").textContent="Bearbeite die Aufgaben und klicke dann hier auf „Auswerten“.";
+  window.scrollTo(0,0);
+});
+
+render(); updateScore();
+
+/* ---------- Taschenrechner ---------- */
+(function(){
+  const panel=document.getElementById("calc"), btn=document.getElementById("calcBtn");
+  const ex=document.getElementById("cExpr"), rs=document.getElementById("cRes");
+  let expr="", ans=0, lastInput=null, justEval=false;
+  document.addEventListener("focusin",e=>{ if(e.target.matches("#tasks input[type=text]")) lastInput=e.target; });
+  function fmt(v){ if(!isFinite(v)) return "Fehler"; let r=Math.round(v*1e8)/1e8; return String(r).replace(".",","); }
+  function toggle(open){ panel.hidden=!open; btn.setAttribute("aria-expanded",open); document.body.classList.toggle("calcopen",open); }
+  btn.addEventListener("click",()=>toggle(panel.hidden));
+  document.getElementById("calcClose").addEventListener("click",()=>toggle(false));
+  function evaluate(s){
+    let j=s.replace(/Ans/g,"("+ans+")").replace(/π/g,"(Math.PI)").replace(/×/g,"*").replace(/÷/g,"/").replace(/−/g,"-")
+      .replace(/,/g,".").replace(/°/g,"").replace(/²/g,"**2")
+      .replace(/cos⁻¹\(/g,"AC(").replace(/sin⁻¹\(/g,"AS(").replace(/√\(/g,"SQ(")
+      .replace(/sin\(/g,"S(").replace(/cos\(/g,"C(").replace(/tan\(/g,"TA(");
+    const open=(j.match(/\(/g)||[]).length-(j.match(/\)/g)||[]).length; if(open>0) j+=")".repeat(open);
+    j=j.replace(/(\d|\))\s*(?=[A-Z(])/g,"$1*");
+    if(!/^[0-9+\-*/().ACSQTMathPI\s]*$/.test(j)) throw new Error("x");
+    const d=Math.PI/180;
+    const f=new Function("S","C","TA","AC","AS","SQ","return ("+j+");");
+    return f(x=>Math.sin(x*d),x=>Math.cos(x*d),x=>Math.tan(x*d),x=>Math.acos(x)/d,x=>Math.asin(x)/d,Math.sqrt);
+  }
+  panel.addEventListener("click",e=>{
+    const b=e.target.closest(".keys button"); if(!b) return;
+    const k=b.dataset.k;
+    if(k==="AC"){ expr=""; rs.textContent="0"; }
+    else if(k==="DEL"){ expr=expr.replace(/(cos⁻¹\(|sin⁻¹\(|sin\(|cos\(|tan\(|√\(|Ans|.)$/,""); }
+    else if(k==="="){
+      if(!expr) return;
+      try{ const v=evaluate(expr); if(!isFinite(v)) throw 0; ans=v; rs.textContent="= "+fmt(v); justEval=true; ex.textContent=expr; return; }
+      catch(_){ rs.textContent="Eingabe prüfen"; }
+    } else {
+      if(justEval){ expr = /^[+−×÷²]/.test(k) ? "Ans"+k : k; justEval=false; ex.textContent=expr; return; }
+      expr+=k;
+    }
+    justEval=false; ex.textContent=expr;
+  });
+  document.getElementById("cTake").addEventListener("click",()=>{
+    const t=rs.textContent.replace("= ","");
+    if(!lastInput||!/^-?[\d,]+$/.test(t)){ rs.textContent= lastInput?"Erst rechnen":"Tippe erst ins Antwortfeld"; return; }
+    const r=Math.round(ans*100)/100; lastInput.value=String(r).replace(".",","); lastInput.focus();
+  });
+})();
+</script>
+</body>
+</html>
